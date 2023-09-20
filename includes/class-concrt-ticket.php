@@ -37,7 +37,6 @@ class Concrt_Ticket {
 	private function set_locale() {
 
 		$plugin_i18n = new Concrt_Ticket_i18n();
-
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
@@ -45,16 +44,17 @@ class Concrt_Ticket {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Concrt_Ticket_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		$this->loader->add_action( 'init', $plugin_admin, 'create_menu', 999 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_is_rollerblind', 999 );
+		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'is_rollerblind', 999 );
 	}
 
 	private function define_public_hooks() {
 
 		$plugin_public = new Concrt_Ticket_Public( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
@@ -68,22 +68,10 @@ class Concrt_Ticket {
 		return $this->plugin_name;
 	}
 
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    Concrt_Ticket_Loader    Orchestrates the hooks of the plugin.
-	 */
 	public function get_loader() {
 		return $this->loader;
 	}
 
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
-	 */
 	public function get_version() {
 		return $this->version;
 	}
