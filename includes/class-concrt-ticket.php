@@ -48,8 +48,8 @@ class Concrt_Ticket {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_is_rollerblind', 999 );
-		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'is_rollerblind', 999 );
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 999 );
+		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'custom_product_field', 999 );
 	}
 
 	private function define_public_hooks() {

@@ -42,46 +42,6 @@ class Concrt_Ticket_Admin {
 
         );         
 
-        /**
-         * Color and Fabrics
-        */
-
-        $fields[] = array(
-            'title' => 'Select Tour',
-            'icon' => 'fa fa-asterisk',
-            'name' => 'tour_title',
-            'fields' => array(
-
-                array(
-                    'type'    => 'group',
-                    'id'      => 'tour_title_options',
-                    'options' => array(
-                        'repeater'          => true,
-                        'accordion'         => true,
-                        'button_title'      => esc_html__( 'Add Tour Title', 'plugin-name' ),
-                        'group_title'       => esc_html__( 'Tour Title', 'plugin-name' ),
-                        'limit'             => 50,
-                        'sortable'          => true,
-                    ),
-                    'fields'  => array(
-
-                        array(
-                            'id'      => 'tour_title_name',
-                            'type'    => 'text',
-                            'title'   => esc_html__( 'Tour Title', 'plugin-name' ),
-                            'attributes' => array(
-                                'data-title' => 'title',
-                                'placeholder' => esc_html__( 'Enter Tour Title', 'plugin-name' ),
-                            ),
-                        )
-                   
-                    ),
-
-                ),
-
-            ),
-        );
-
         $fields[] = array(
             'title' => 'Main Act ',
             'icon' => 'fa fa-asterisk',
@@ -164,7 +124,6 @@ class Concrt_Ticket_Admin {
             ),
         );
 
-        
         $fields[] = array(
             'title' => 'Presenting Partners',
             'icon' => 'fa fa-asterisk',
@@ -205,11 +164,108 @@ class Concrt_Ticket_Admin {
 
             ),
         );
- 
-
-
-
         $options_panel = new Exopite_Simple_Options_Framework( $config_submenu, $fields );
+
+    }
+
+    // Define a custom field
+    function custom_product_field() {
+        global $post;
+        $all_options = get_exopite_sof_option($this->plugin_name);    
+        
+        echo '<div class="options_group">';
+
+        if(isset($all_options['main_act_options'])){
+            $main_act_names = array();
+            foreach ($all_options['main_act_options'] as $option) {
+                    $main_act_names[] = $option['main_act_name']; // Add main_act_name to the new array
+            }
+            $options = array(
+                ''        => __( 'Select Main Act', 'woocommerce' ),
+            );
+            $options = array_merge($options, array_combine($main_act_names, $main_act_names));
+            woocommerce_wp_select(
+                array(
+                    'id'          => '_custom_main_act',
+                    'label'       => __( 'Main Act', 'woocommerce' ),
+                    'options'     => $options, // Use the updated $options array
+                )
+            );
+        }
+
+        if (isset($all_options['tour_promoter_options'])){
+            $tour_promoter_names = array();
+            foreach ($all_options['tour_promoter_options'] as $option) {
+                    $tour_promoter_names[] = $option['tour_promoter_name']; // Add main_act_name to the new array
+            }
+            $options = array(
+                ''        => __( 'Select Tour Promoter', 'woocommerce' ),
+            );
+            $options = array_merge($options, array_combine($tour_promoter_names, $tour_promoter_names));
+            woocommerce_wp_select(
+                array(
+                    'id'          => '_custom_tour_romoter',
+                    'label'       => __( 'Tour Promoter', 'woocommerce' ),
+                    'options'     => $options, // Use the updated $options array
+                )
+            );
+        }
+
+        $tour_promoter_names = array();
+        if (isset($all_options['presenting_partners_options'])){
+            foreach ($all_options['presenting_partners_options'] as $option) {
+                    $tour_promoter_names[] = $option['presenting_partners_name']; // Add main_act_name to the new array
+            }
+            $options = array(
+                ''        => __( 'Select Presenting Partners', 'woocommerce' ),
+            );
+            $options = array_merge($options, array_combine($tour_promoter_names, $tour_promoter_names));
+            woocommerce_wp_select(
+                array(
+                    'id'          => '_custom_presenting_partners',
+                    'label'       => __( 'Presenting Partners', 'woocommerce' ),
+                    'options'     => $options, // Use the updated $options array
+                )
+            );
+        }
+
+
+        woocommerce_wp_text_input(
+            array(
+                'id' => '_custom_date_field',
+                'label' => __('Custom Date Field', 'your-text-domain'),
+                'desc_tip' => 'true',
+                'description' => __('Select a date using the calendar.', 'your-text-domain'),
+                'type' => 'date', // This sets the input type to 'date'
+                'custom_attributes' => array(
+                    'data-datepicker_format' => 'dd/mm/yy', // Change this to your desired date format
+                ),
+            )
+        );
+        echo '</div>';
+    }
+
+    function save_custom_product_field($product_id) {
+        $custom_date = $_POST['_custom_date_field'];
+        if (!empty($custom_date)) {
+            update_post_meta($product_id, '_custom_date_field', esc_attr($custom_date));
+        }
+
+        $main_act = $_POST['_custom_main_act'];
+        if (!empty($main_act)) {
+            update_post_meta($product_id, '_custom_main_act', esc_attr($main_act));
+        }
+
+        $main_act = $_POST['_custom_tour_romoter'];
+        if (!empty($main_act)) {
+            update_post_meta($product_id, '_custom_tour_romoter', esc_attr($main_act));
+        }
+
+        $main_act = $_POST['_custom_presenting_partners'];
+        if (!empty($main_act)) {
+            update_post_meta($product_id, '_custom_presenting_partners', esc_attr($main_act));
+        }
+
 
     }
 
