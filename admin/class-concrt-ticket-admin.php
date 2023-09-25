@@ -18,12 +18,6 @@ class Concrt_Ticket_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/concrt-ticket-admin.js', array( 'jquery' ), $this->version, false );
 	}
 
-
-    public function add_concert_ticket_product_dropdown($types) {
-        $types[ 'concert_ticket' ] = __( 'Concert Ticket' );
-        return $types;
-    }
-
 	public function create_menu() {
 
         /**
@@ -162,7 +156,7 @@ class Concrt_Ticket_Admin {
         global $post;
         $all_options = get_exopite_sof_option($this->plugin_name);    
         
-        echo '<div class="options_group">';
+        echo "<div id='concert_ticket_options' class='panel woocommerce_options_panel'>";
         woocommerce_wp_checkbox( array(
             'id'        => '_enable_concert_ticketing',
             'desc'      => __('Enable Concert Ticketing ', 'woocommerce'),
@@ -355,8 +349,6 @@ class Concrt_Ticket_Admin {
 
     }
 
-
-
     public function wh_concert_ticket_admin_custom_js() {
 
         if ('product' != get_post_type()) :
@@ -382,7 +374,7 @@ class Concrt_Ticket_Admin {
         array_push($tabs['attribute']['class'], 'show_if_concert_ticket');
         array_push($tabs['variations']['class'], 'show_if_concert_ticket');
 
-        $tabs['demo'] = array(
+        $tabs['concert_ticket'] = array(
             'label'     => __( 'Concert Ticket', 'concert_ticket' ),
             'target' => 'concert_ticket_options',
             'class'  => 'show_if_concert_ticket',
@@ -391,5 +383,12 @@ class Concrt_Ticket_Admin {
         return $tabs;
     }
 
+    public function add_concert_ticket_product_dropdown($types) {
+        $types[ 'concert_ticket' ] = __( 'Concert Ticket', 'concert_product' );
+        return $types;
+    }
+
+
 
 }
+
