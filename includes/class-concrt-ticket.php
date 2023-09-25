@@ -48,9 +48,16 @@ class Concrt_Ticket {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 999 );
-		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'custom_product_field', 999 );
+
 		
+
+		$this->loader->add_action( 'product_type_selector', $plugin_admin, 'add_concert_ticket_product_dropdown' );
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 10 );
+		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'custom_product_field', 10 );
+		$this->loader->add_action( 'admin_footer', $plugin_admin, 'wh_concert_ticket_admin_custom_js', 10 );
+		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'woocommerce_product_data_tabs',10, 1 );  
+		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'woocommerce_product_data_tabs',10, 1 );  
+
 	}
 
 	private function define_public_hooks() {
