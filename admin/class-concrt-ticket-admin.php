@@ -1,6 +1,7 @@
 <?php
 
 class Concrt_Ticket_Admin {
+    
 	private $plugin_name;
 	private $version;
 
@@ -34,7 +35,6 @@ class Concrt_Ticket_Admin {
             'icon' => 'fa fa-asterisk',
             'name' => 'main_act',
             'fields' => array(
-
                 array(
                     'type'    => 'group',
                     'id'      => 'main_act_options',
@@ -47,7 +47,6 @@ class Concrt_Ticket_Admin {
                         'sortable'          => true,
                     ),
                     'fields'  => array(
-
                         array(
                             'id'      => 'main_act_name',
                             'type'    => 'text',
@@ -62,11 +61,8 @@ class Concrt_Ticket_Admin {
                             'type'    => 'image',
                             'title'   => 'Select Image',
                         ),
-                   
                     ),
-
                 ),
-
             ),
         );
 
@@ -75,7 +71,6 @@ class Concrt_Ticket_Admin {
             'icon' => 'fa fa-asterisk',
             'name' => 'tour_promoter',
             'fields' => array(
-
                 array(
                     'type'    => 'group',
                     'id'      => 'tour_promoter_options',
@@ -88,7 +83,6 @@ class Concrt_Ticket_Admin {
                         'sortable'          => true,
                     ),
                     'fields'  => array(
-
                         array(
                             'id'      => 'tour_promoter_name',
                             'type'    => 'text',
@@ -103,11 +97,13 @@ class Concrt_Ticket_Admin {
                             'type'    => 'image',
                             'title'   => 'Select Image',
                         ),
-                   
+                        array(
+                            'id'      => 'tour_promoter_email',
+                            'type'    => 'text',
+                            'title'   => 'Enter Email-id',
+                        ),
                     ),
-
                 ),
-
             ),
         );
 
@@ -116,7 +112,6 @@ class Concrt_Ticket_Admin {
             'icon' => 'fa fa-asterisk',
             'name' => 'presenting_partners',
             'fields' => array(
-
                 array(
                     'type'    => 'group',
                     'id'      => 'presenting_partners_options',
@@ -129,7 +124,6 @@ class Concrt_Ticket_Admin {
                         'sortable'          => true,
                     ),
                     'fields'  => array(
-
                         array(
                             'id'      => 'presenting_partners_name',
                             'type'    => 'text',
@@ -144,11 +138,8 @@ class Concrt_Ticket_Admin {
                             'type'    => 'image',
                             'title'   => 'Select Image',
                         ),
-                   
                     ),
-
                 ),
-
             ),
         );
         $options_panel = new Exopite_Simple_Options_Framework( $config_submenu, $fields );
@@ -160,6 +151,13 @@ class Concrt_Ticket_Admin {
         $all_options = get_exopite_sof_option($this->plugin_name);    
         
         echo '<div class="options_group">';
+        woocommerce_wp_checkbox( array(
+            'id'        => '_enable_concert_ticketing',
+            'desc'      => __('Enable Concert Ticketing ', 'woocommerce'),
+            'label'     => __('Enable Concert Ticketing', 'woocommerce'),
+            'desc_tip'  => 'true'
+        ));
+
         if(isset($all_options['main_act_options'])){
             $main_act_names = array();
             foreach ($all_options['main_act_options'] as $option) {
@@ -216,54 +214,98 @@ class Concrt_Ticket_Admin {
 
         woocommerce_wp_text_input(
             array(
-                'id' => '_custom_date_field',
-                'label' => __('Select Date', 'woocommerce'),
+                'id' => '_custom_start_date_field',
+                'label' => __('Select Sale Start Date', 'woocommerce'),
                 //'desc_tip' => 'true',
                 //'description' => __('Select a date using the calendar.', 'your-text-domain'),
-                'type' => 'date', // This sets the input type to 'date'
-                //'custom_attributes' => array(
-                //    'data-datepicker_format' => 'dd/mm/yy', // Change this to your desired date format
-               // ),
+                'type' => 'datetime-local', // This sets the input type to 'date'
+
             )
         );
+    
+        woocommerce_wp_text_input(
+            array(
+                'id' => '_custom_end_date_field',
+                'label' => __('Select Sale End Date', 'woocommerce'),
+                'type' => 'datetime-local', // This sets the input type to 'date'
+            )
+        );
+
+        woocommerce_wp_text_input(array(
+            'id' => '_ticket_price',
+            'label' => __('Ticket Price', 'woocommerce'),
+            'type' => 'number',
+            'custom_attributes' => array(
+                'step' => 'any',
+                'min' => '0'
+            ),
+        ));
+
+        woocommerce_wp_text_input(array(
+            'id' => '_ticket_quantity',
+            'label' => __('Ticket Quantity', 'woocommerce'),
+            'type' => 'number',
+            'custom_attributes' => array(
+                'step' => 'any',
+                'min' => '0'
+            ),
+        ));
 
         echo '<H4"><b style="padding-left:30px;">Add Venue</b></h4>';
         woocommerce_wp_text_input(
             array(
                 'id' => '_custom_venue_name',
                 'label' => __('Venue Name', 'woocommerce'),
-                'type' => 'text', // This sets the input type to 'date'
+                'type' => 'text', 
             )
         );
         woocommerce_wp_text_input(
             array(
                 'id' => '_custom_venue_street',
                 'label' => __('Street Number', 'woocommerce'),
-                'type' => 'text', // This sets the input type to 'date'
+                'type' => 'text',
             )
         );
         woocommerce_wp_text_input(
             array(
                 'id' => '_custom_venue_city',
                 'label' => __('Venue City', 'woocommerce'),
-                'type' => 'text', // This sets the input type to 'date'
+                'type' => 'text', 
             )
         );
         woocommerce_wp_text_input(
             array(
                 'id' => '_custom_venue_zipcode',
                 'label' => __('Venue Zipcode', 'woocommerce'),
-                'type' => 'text', // This sets the input type to 'date'
+                'type' => 'text', 
             )
-        );
-        
+        );  
         echo '</div>';
     }
 
     function save_custom_product_field($product_id) {
-        $custom_date = $_POST['_custom_date_field'];
+        
+        $enable_concert_ticketing = isset( $_POST['_enable_concert_ticketing'] ) ? 'yes' : 'no';
+        update_post_meta($product_id, '_enable_concert_ticketing', esc_attr($enable_concert_ticketing));
+        
+        $ticket_quantity = $_POST['_ticket_quantity'];
+        if (!empty($ticket_quantity)) {
+            update_post_meta($product_id, '_ticket_quantity', esc_attr($ticket_quantity));
+        }
+
+        $ticket_price = $_POST['_ticket_price'];
+        if (!empty($ticket_price)) {
+            update_post_meta($product_id, '_ticket_price', esc_attr($ticket_price));
+        }
+
+        $custom_date = $_POST['_custom_start_date_field'];
         if (!empty($custom_date)) {
-            update_post_meta($product_id, '_custom_date_field', esc_attr($custom_date));
+            update_post_meta($product_id, '_custom_start_date_field', esc_attr($custom_date));
+        }
+
+        $custom_date = $_POST['_custom_end_date_field'];
+        if (!empty($custom_date)) {
+            update_post_meta($product_id, '_custom_end_date_field', esc_attr($custom_date));
         }
 
         $main_act = $_POST['_custom_main_act'];
@@ -297,8 +339,28 @@ class Concrt_Ticket_Admin {
         if (!empty($venue_zipcode)) {
             update_post_meta($product_id, '_custom_venue_zipcode', esc_attr($venue_zipcode));
         }
-        update_post_meta($product_id, '_custom_venue_address', esc_attr($venue_name.','.$venue_street.','.$venue_city.','.$venue_zipcode));
+        update_post_meta($product_id, '_custom_venue_address', esc_attr($venue_name.', '.$venue_street.', '.$venue_city.', '.$venue_zipcode));
 
     }
 
+    
+
+
+
+
+
+
+/*
+    function add_concert_product_type( $types ){
+        $types[ 'concert_ticketing' ] = __( 'Concert Ticketing', 'concert_product' );
+        return $types; 
+    }*/
 }
+
+/* 
+class WC_Product_Concert_ticketing extends WC_Product {
+    public function __construct( $product ) {
+        $this->product_type = 'concert_ticketing';
+        parent::__construct( $product );
+    }
+}*/

@@ -50,6 +50,7 @@ class Concrt_Ticket {
 
 		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 999 );
 		$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'custom_product_field', 999 );
+		
 	}
 
 	private function define_public_hooks() {
@@ -59,6 +60,11 @@ class Concrt_Ticket {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'woocommerce_before_add_to_cart_quantity', $plugin_public, 'before_add_to_cart_quantity', 999 );
+
+
+		
+
+
 	}
 
 	public function run() {

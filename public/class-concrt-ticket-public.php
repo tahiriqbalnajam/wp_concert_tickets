@@ -21,17 +21,25 @@ class Concrt_Ticket_Public {
 	public function before_add_to_cart_quantity() {
 		global $post;
 
-		$main_act = get_post_meta( $post->ID, '_custom_main_act', true );
-		$tour_romoter = get_post_meta( $post->ID, '_custom_tour_promoter', true );
-		$partners = get_post_meta( $post->ID, '_custom_presenting_partners', true );
-		$date = get_post_meta( $post->ID, '_custom_date_field', true );
-		$venue_address = get_post_meta( $post->ID, '_custom_venue_address', true );
-		
-		echo "<b>Main ACT:</b> ".$main_act."<br>"; 
-		echo "<b>Tour Promoter:</b> ".$tour_romoter."<br>"; 
-		echo "<b>Presenting Partners:</b> ".$partners."<br>"; 
-		echo "<b>Venue Address:</b> ".$venue_address."<br>"; 
-		echo "<b>Date:</b> ".$date."<br><br><br>"; 
+		$enable_concert_ticketing = get_post_meta( $post->ID, '_enable_concert_ticketing', true );
+		if($enable_concert_ticketing == "yes"){
+			$main_act = get_post_meta( $post->ID, '_custom_main_act', true );
+			$tour_romoter = get_post_meta( $post->ID, '_custom_tour_promoter', true );
+			$partners = get_post_meta( $post->ID, '_custom_presenting_partners', true );
+			$startdate = get_post_meta( $post->ID, '_custom_start_date_field', true );
+			$enddate = get_post_meta( $post->ID, '_custom_end_date_field', true );
+			$venue_address = get_post_meta( $post->ID, '_custom_venue_address', true );
+			
+			echo "<b>Main ACT:</b> ".$main_act."<br>"; 
+			echo "<b>Tour Promoter:</b> ".$tour_romoter."<br>"; 
+			echo "<b>Presenting Partners:</b> ".$partners."<br>"; 
+			echo "<b>Venue Address:</b> ".$venue_address."<br>"; 
+			echo "<b>Start Date:</b> ".$startdate."<br>"; 
+			echo "<b>End Date:</b> ".$enddate."<br><br><br>"; 
+		}
 	}
+	
+	
+	
 
 }
