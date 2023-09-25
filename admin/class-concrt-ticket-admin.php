@@ -22,7 +22,15 @@ class Concrt_Ticket_Admin {
 
 	}
 
+
+    public function add_concert_ticket_product_dropdown($types) {
+        $types[ 'concert_ticket' ] = __( 'Concert Ticket' );
+        return $types;
+    }
+
 	public function create_menu() {
+
+
         /**
          * Create a submenu page under Plugins.
          * Framework also add "Settings" to your plugin in plugins list.
@@ -267,6 +275,41 @@ class Concrt_Ticket_Admin {
         }
 
 
+    }
+
+
+    public function wh_concert_ticket_admin_custom_js() {
+
+        if ('product' != get_post_type()) :
+            return;
+        endif;
+        ?>
+        <script type='text/javascript'>
+                jQuery(document).ready(function () {
+                jQuery('.product_data_tabs .general_tab').addClass('show_if_concert_ticket').show();
+                jQuery('#general_product_data .pricing').addClass('show_if_concert_ticket').show();
+                //for Inventory tab
+                jQuery('.inventory_options').addClass('show_if_concert_ticket').show();
+                jQuery('#inventory_product_data ._manage_stock_field').addClass('show_if_concert_ticket').show();
+                jQuery('#inventory_product_data ._sold_individually_field').parent().addClass('show_if_concert_ticket').show();
+                jQuery('#inventory_product_data ._sold_individually_field').addClass('show_if_concert_ticket').show();
+            });
+        </script>
+        <?php
+    
+    }
+
+    public function woocommerce_product_data_tabs($tabs) {
+        array_push($tabs['attribute']['class'], 'show_if_concert_ticket');
+        array_push($tabs['variations']['class'], 'show_if_concert_ticket');
+
+        $tabs['demo'] = array(
+            'label'     => __( 'Concert Ticket', 'concert_ticket' ),
+            'target' => 'concert_ticket_options',
+            'class'  => 'show_if_concert_ticket',
+        );
+
+        return $tabs;
     }
 
 }
