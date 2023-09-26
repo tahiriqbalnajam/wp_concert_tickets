@@ -48,7 +48,7 @@ class Concrt_Ticket {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'product_type_selector', $plugin_admin, 'add_concert_ticket_product_dropdown', 999 );
-		//$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 10 );
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_custom_product_field', 999 );
 		//$this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'custom_product_field', 10 );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'wh_concert_ticket_admin_custom_js', 10 );
 		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'woocommerce_product_data_tabs',10, 1 );   
@@ -63,6 +63,13 @@ class Concrt_Ticket {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'woocommerce_before_add_to_cart_quantity', $plugin_public, 'before_add_to_cart_quantity', 999 );
+		$this->loader->add_action( 'woocommerce_concert_ticket_add_to_cart', $plugin_public, 'woocommerce_simple_add_to_cart', 999 );
+
+		$this->loader->add_action( 'woocommerce_get_stock_html', $plugin_public, 'custom_stock_text', 10, 2 );
+
+		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'save_custom_order_item_meta_data', 20, 3 );
+	
+
 	}
 
 	public function run() {

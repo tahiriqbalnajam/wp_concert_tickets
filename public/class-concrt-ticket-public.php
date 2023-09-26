@@ -22,6 +22,7 @@ class Concrt_Ticket_Public {
 		global $post;
 
 		$enable_concert_ticketing = get_post_meta( $post->ID, '_enable_concert_ticketing', true );
+	
 		if($enable_concert_ticketing == "yes"){
 			$main_act = get_post_meta( $post->ID, '_custom_main_act', true );
 			$tour_romoter = get_post_meta( $post->ID, '_custom_tour_promoter', true );
@@ -38,7 +39,29 @@ class Concrt_Ticket_Public {
 			echo "<b>End Date:</b> ".$enddate."<br><br><br>"; 
 		}
 	}
+
+	public function woocommerce_simple_add_to_cart() {
+		wc_get_template( 'single-product/add-to-cart/simple.php' );
+	}
 	
+	public function custom_stock_text($html, $product) {
+		// Check if the product is in stock
+		if ($product->is_in_stock()) {
+			$quantity = $product->get_stock_quantity();
+			$custom_text = '<span class="custom-stock-text"><b>Tickets Available: '.$quantity.'</b></span><br><br>';
+			return $custom_text;
+		}
+		// If the product is out of stock, return the original HTML
+		return $html;
+	}
+	
+
+	
+function save_custom_order_item_meta_data( $item, $cart_item_key, $values, $order ) {
+    if( isset( $values['custom_data']['label'] ) && isset( $values['custom_data']['value'] ) ) {
+       $item->update_meta_data( $values['custom_data']['label'], $values['custom_data']['value'] );
+    }
+}
 	
 	
 

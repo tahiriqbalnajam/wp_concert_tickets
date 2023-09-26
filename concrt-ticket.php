@@ -73,29 +73,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-concrt-ticket.php';
  *
  * @since    1.0.0
  */
-function add_concert_ticket_product_dropdown() {
-  
-	class CPT_lease_product extends WC_Product_Variable  {
-		public function __construct( $product ) {
-			  $this->product_type = 'concert_ticket';
-			  parent::__construct( $product );
-		}
 
-		public function get_type() {
-            return 'concert_ticket';
-        }
-	}
-  }
-  add_action( 'init', 'add_concert_ticket_product_dropdown' );
-
-  add_filter('woocommerce_product_data_tabs', function($tabs) {
-
-	array_push($tabs['attribute']['class'], 'show_if_variable show_if_membership');
-	array_push($tabs['variations']['class'], 'show_if_membership');
-
-	return $tabs;
-
-}, 10, 1); 
 function run_concrt_ticket() {
 
 	$plugin = new Concrt_Ticket();
