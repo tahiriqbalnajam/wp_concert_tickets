@@ -81,5 +81,15 @@ function run_concrt_ticket() {
 
 }
 run_concrt_ticket();
+function load_concert_ticket_product_type() {
+	class WC_Product_concert_ticket extends WC_Product {
+		public function __construct( $product ) {
+			$this->product_type = 'concert_ticket';
+			parent::__construct( $product );
+		}
+	}
+}
+
+add_action( 'init', 'load_concert_ticket_product_type', 10 );
 
 

@@ -393,9 +393,4 @@ class Concrt_Ticket_Admin {
 }
 
 
-class WC_Product_concert_ticket extends WC_Product {
-    public function __construct( $product ) {
-        $this->product_type = 'concert_ticket';
-        parent::__construct( $product );
-    }
-}
+
